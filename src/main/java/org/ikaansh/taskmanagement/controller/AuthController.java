@@ -1,0 +1,35 @@
+package org.ikaansh.taskmanagement.controller;
+
+import jakarta.validation.Valid;
+import org.ikaansh.taskmanagement.dto.AuthResponse;
+import org.ikaansh.taskmanagement.dto.LoginRequest;
+import org.ikaansh.taskmanagement.dto.RegisterRequest;
+import org.ikaansh.taskmanagement.service.AuthService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(
+            @Valid @RequestBody RegisterRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(
+            @Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
+    }
+}
+
